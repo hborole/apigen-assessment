@@ -1,16 +1,7 @@
 // App.tsx
 import React, { useState } from 'react';
 import userData from './data';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  status: string;
-  signUpDate: string;
-  lastLogin: string;
-}
+import { User } from './types';
 
 const App = () => {
   const [users, setUsers] = useState<User[]>(userData);
@@ -50,78 +41,115 @@ const App = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <table className="table-auto w-full text-left shadow-lg bg-white">
-        <thead className="bg-gray-200">
-          <tr>
-            <th className="px-4 py-2">ID</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Email</th>
-            <th className="px-4 py-2">Role</th>
-            <th className="px-4 py-2">Status</th>
-            <th className="px-4 py-2">Sign Up Date</th>
-            <th className="px-4 py-2">Last Login</th>
-            <th className="px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id} className="border-b">
-              <td className="px-4 py-2">{user.id}</td>
-              <td className="px-4 py-2">{user.name}</td>
-              <td className="px-4 py-2">{user.email}</td>
-              <td className="px-4 py-2">{user.role}</td>
-              <td className="px-4 py-2">{user.status}</td>
-              <td className="px-4 py-2">{user.signUpDate}</td>
-              <td className="px-4 py-2">{user.lastLogin}</td>
-              <td className="px-4 py-2 flex space-x-2">
-                <button
-                  onClick={() => handleEdit(user)}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    <div className="container mx-auto p-6">
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white divide-y divide-gray-200 shadow-md rounded-lg">
+          <thead className="bg-gray-50">
+            <tr>
+              {[
+                'ID',
+                'Name',
+                'Email',
+                'Role',
+                'Status',
+                'Sign Up Date',
+                'Last Login',
+                'Actions',
+              ].map((header) => (
+                <th
+                  key={header}
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(user.id)}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Delete
-                </button>
-              </td>
+                  {header}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {user.id}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {user.name}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {user.email}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {user.role}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {user.status}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {user.signUpDate}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {user.lastLogin}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button
+                    onClick={() => handleEdit(user)}
+                    className="text-indigo-600 hover:text-indigo-900 mr-3"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(user.id)}
+                    className="text-red-600 hover:text-red-900"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {editFormData && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full px-4">
-          <div className="relative top-20 mx-auto shadow-lg rounded-md bg-white max-w-md">
-            <div className="flex justify-between items-center bg-blue-500 text-white text-lg px-4 py-2">
-              <h3>Edit User</h3>
-              <button onClick={handleCancel}>X</button>
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+          <div className="bg-white p-5 rounded-lg shadow-xl">
+            <div className="flex justify-between items-center pb-3">
+              <p className="text-2xl font-bold">Edit User</p>
+              <div className="cursor-pointer z-50" onClick={handleCancel}>
+                <svg
+                  className="fill-current text-black"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                >
+                  <path d="M16.2 1.8l-7.2 7.2-7.2-7.2-1.8 1.8 7.2 7.2-7.2 7.2 1.8 1.8 7.2-7.2 7.2 7.2 1.8-1.8-7.2-7.2 7.2-7.2-1.8-1.8z" />
+                </svg>
+              </div>
             </div>
-            <div className="p-4">
+            <form className="space-y-4">
               <input
                 type="text"
                 name="name"
                 value={editFormData.name}
                 onChange={handleEditFormChange}
-                className="px-4 py-2 border rounded w-full mb-2"
+                className="px-4 py-2 border rounded w-full"
               />
               <input
                 type="email"
                 name="email"
                 value={editFormData.email}
                 onChange={handleEditFormChange}
-                className="px-4 py-2 border rounded w-full mb-2"
+                className="px-4 py-2 border rounded w-full"
               />
               <button
+                type="button"
                 onClick={handleSave}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
               >
                 Save Changes
               </button>
-            </div>
+            </form>
           </div>
         </div>
       )}
