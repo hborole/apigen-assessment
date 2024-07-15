@@ -78,17 +78,47 @@ const App = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {user.email}
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <span
+                    className={`inline-block text-white px-3 py-1 rounded-md text-xs font-medium ${
+                      user.role === 'Admin'
+                        ? 'bg-green-500'
+                        : user.role === 'Manager'
+                        ? 'bg-purple-500'
+                        : 'bg-blue-500'
+                    }`}
+                  >
+                    {user.role}
+                  </span>
+                </td>
+
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  <span
+                    className={`inline-block text-white px-3 py-1 rounded-md text-xs font-medium ${
+                      user.status === 'Active'
+                        ? 'bg-green-500'
+                        : user.status === 'Pending'
+                        ? 'bg-blue-500'
+                        : 'bg-red-400'
+                    }`}
+                  >
+                    {user.status}
+                  </span>
+                </td>
+
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {user.role}
+                  {new Date(user.signUpDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {user.status}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {user.signUpDate}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {user.lastLogin}
+                  {new Date(user.lastLogin).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button
@@ -145,7 +175,7 @@ const App = () => {
               <button
                 type="button"
                 onClick={handleSave}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+                className="text-indigo-600 hover:text-indigo-900 mr-3"
               >
                 Save Changes
               </button>
